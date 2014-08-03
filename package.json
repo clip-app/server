@@ -9,6 +9,8 @@
     "elasticsearch": "^2.4.0",
     "express": "3.4.8",
     "jade": "*",
-    "less-middleware": "*"
+    "less-middleware": "*",
+    "mongoose": "^3.8.14",
+    "underscore": "^1.6.0"
   }
 }
