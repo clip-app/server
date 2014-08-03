@@ -39,15 +39,13 @@ exports.generate = function(req, res) {
     .exec(function (err, doc) {
       if (err) return callback(err);
       if (!doc) {
-        return callback(null, {
-          topic: "pg",
-          word: "umm",
-          video_id: "Ci9L6zVbwnA",
-          start: 810,
-          end: 812
-        });
+        Word
+        .findOne()
+        .where('word').equals('ummXXX')
+        .exec(callback);
+      } else {
+        callback(null, doc);
       }
-      return callback(null, doc);
     });
   }, function done(err, words) {
     if (err) {
