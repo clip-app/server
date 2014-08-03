@@ -24,27 +24,28 @@ exports.train = function(req, res) {
 
 exports.generate = function(req, res) {
   // generate here
-  var entity = req.param('entity');
-  var word = req.param('word');
+  var topic = req.param('topic');
+  var body = req.param('body');
+  var words = body.split(' ');
   Word
-  .find()
-  // .where('topic').equals(entity)
-  .where('word').equals(word)
-  .exec(function (err, words) {
-    if (err) {
-      console.log(err);
-      res.send(500, err);
-    }
-    var generation = new Generation({
-      words: _.pluck(words, '_id'),
-    });
-    generation.save(function (err) {
-      if (err) {
-        return res.send(500, err);
-      }
-      res.redirect('/' + generation._id);
-    });
-  });
+  // .find()
+  // // .where('topic').equals(entity)
+  // .where('word').equals(word)
+  // .exec(function (err, words) {
+  //   if (err) {
+  //     console.log(err);
+  //     res.send(500, err);
+  //   }
+  //   var generation = new Generation({
+  //     words: _.pluck(words, '_id'),
+  //   });
+  //   generation.save(function (err) {
+  //     if (err) {
+  //       return res.send(500, err);
+  //     }
+  //     res.redirect('/' + generation._id);
+  //   });
+  // });
 };
 
 exports.generation = function(req, res) {
@@ -62,7 +63,7 @@ exports.generation = function(req, res) {
     }
     console.log(generation.words.toObject());
     res.render('video', {
-      words: generation.words.toObject()
+      words: JSON.stringify(generation.words.toObject())
     });
   });
 };
