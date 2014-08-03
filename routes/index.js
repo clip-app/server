@@ -28,7 +28,7 @@ exports.generate = function(req, res) {
   var word = req.param('word');
   Word
   .find()
-  .where('topic').equals(entity)
+  // .where('topic').equals(entity)
   .where('word').equals(word)
   .exec(function (err, words) {
     if (err) {
