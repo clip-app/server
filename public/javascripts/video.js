@@ -39,8 +39,8 @@ Player.prototype.cueNext = function () {
   this.state = 3;
   this.player.cueVideoById({
     videoId: event.video_id,
-    startSeconds: event.start,
-    endSeconds: event.end + 1,
+    startSeconds: event.start - 0.03,
+    endSeconds: event.end + 0.02,
     suggestedQuality: "240p"
   });
 }
