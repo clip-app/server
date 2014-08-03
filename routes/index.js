@@ -60,6 +60,9 @@ exports.generation = function(req, res) {
     if (!generation) {
       return res.render('404');
     }
-    res.render('video', generation.toObject());
+    console.log(generation.words.toObject());
+    res.render('video', {
+      words: generation.words.toObject()
+    });
   });
 };
