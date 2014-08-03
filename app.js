@@ -36,7 +36,7 @@ app.post('/generate', routes.generate);
 app.get('/:generation_id', routes.generation);
 
 app.use(function(req, res, next){
-  res.send(404, 'CANT FIND YOUR SHIT HAHAHAHAHA');
+  res.render('404');
 });
 
 http.createServer(app).listen(app.get('port'), function(){

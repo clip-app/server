@@ -44,7 +44,7 @@ exports.generation = function(req, res) {
       return res.send(500, err);
     }
     if (!generation) {
-      return res.send(404, "No generation with that idea found. U mad?");
+      return res.render('404');
     }
     res.render('video', generation.toObject());
   });
