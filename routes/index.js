@@ -15,25 +15,27 @@ exports.index = function(req, res){
 
 exports.generate = function(req, res){
   //generate here
-  var entity = req.param('entity')
-  var content = req.param('content')
+  var entity = req.param('entity');
+  var word = req.param('word');
 
   elastic.search({
     index: 'words',
+    type: 'word',
     body: {
       query: {
         match: {
           topic: entity,
-          word: content
+          word: word
         }
       }
     }
-  }).then(function (err, resp) {
+  }).then(function (err, res) {
     if (err) {
-      return;
+      console.log("ERRR");
+      console.log(err);
     }
 
-    var hits = resp.hits.hits;
+    var hits = res.hits.hits;
 
     console.log(hits);
 
