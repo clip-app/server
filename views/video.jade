@@ -6,8 +6,14 @@ block content
       #logocontainer Clippy
     #stage
       #outline
-        #video
+        #players
+        .cf
         #share 
           a#fb Share on Facebook
           a#tweet Share on Twitter
           a#link(href="#copy") http://clippy.fm/u1a23b823
+  script.
+    var input = !{words}
+
+  | <script src="https://www.youtube.com/iframe_api"></script>
+  | <script src="/javascripts/video.js"></script>
