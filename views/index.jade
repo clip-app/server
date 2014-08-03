@@ -2,16 +2,22 @@ extends layout
 
 block content
   #container
-    #logo Clippy
+    #logo
+      #logocontainer Clippy
     #form
       .bit
-        h1 Person
+        h1 Speaker
         select(data-placeholder="Choose a person...",class="chosen-select")
-          option(value="A") Childish Gambino
-          option(value="B") Barry O'
+          option(value="A") Paul Graham
+          option(value="B") Barack Obama
           option(value="C") Hillary Clinton
           option(value="D") Bill Nye
+          option(value="E") Neil deGrasse Tyson
+          option(value="F") Edward Snowden
+          option(value="G") Arianna Huffington
+          option(value="H") Steve Jobs
+          option(value="I") Bill Gates
       .bit
-        h1 Text
-        textarea#content
+        h1 Phrase
+        textarea(placeholder="This app will win YC hacks")#content
       button#generate Generate Video
