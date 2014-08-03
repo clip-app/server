@@ -7,7 +7,6 @@ block content
 
     form#form(action="/generate", method="POST")
       .bit
-        h1 Speaker
         select(data-placeholder="Choose a person...", name="topic", class="chosen-select")
           option(value="A") Paul Graham
           option(value="B") Barack Obama
@@ -19,6 +18,5 @@ block content
           option(value="H") Steve Jobs
           option(value="I") Bill Gates
       .bit
-        h1 Phrase
         textarea(name='body', placeholder="This app will win YC hacks")#content
       button#generate(type='submit', name='submit', value="submit") Generate
