@@ -141,8 +141,26 @@ html,body {
       @height: 480px;
 
       #outline {
-        height: 480px;
+        height: @height+40px;
         position: relative;
+
+        #controls {
+          width: @width;
+          height: @height+40px;
+          position: absolute;
+          
+          &.pause {
+            background-color: rgba(0,0,0,.2);
+            background-image: url('../images/play.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+          }
+        }
+
+        #players {
+          height: @height+40px;
+          width: 100%;
+        }
 
         .video {
           border: 2px dashed #363636;
@@ -152,7 +170,7 @@ html,body {
           box-shadow: 0 0 0 4px black, 2px 1px 6px 4px rgba(0, 0, 0, 0.1);
           margin: 0 auto;
           width: @width;
-          height: @height;
+          height: @height+30px;
 
           background: black;
         }
@@ -160,7 +178,7 @@ html,body {
 
       #share {
         font-size: 16px;
-        margin-top: 50px+@height;
+        margin-top: 50px;
         padding-bottom: 20px;
         width: auto;
         color: white;
