@@ -101,8 +101,9 @@ function playNext() {
 
   currentPlayer.player.playVideo();
 
-  var word = currentPlayer.meta.word;
+  var word = currentPlayer.meta ? currentPlayer.meta.word : undefined;
   if (word) {
+    if (word == "ummXXX") word = "";
     $("#current-word").html(word);
   }
 }
