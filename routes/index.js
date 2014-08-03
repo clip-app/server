@@ -11,6 +11,17 @@ exports.index = function(req, res) {
   res.render('index');
 };
 
+exports.train = function(req, res) {
+  Word
+  .findOne()
+  .where('topic').equals(req.param('topic'))
+  .exec(function(err, word) {
+    if (err) return res.send(500, err);
+    if (_.isEmpty(word)) return res.send(404, "No topic found lol");
+    res.render('train', word);
+  });
+};
+
 exports.generate = function(req, res) {
   // generate here
   var entity = req.param('entity');
