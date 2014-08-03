@@ -35,6 +35,10 @@ app.get('/', routes.index);
 app.post('/generate', routes.generate);
 app.get('/:generation_id', routes.generation);
 
+app.use(function(req, res, next){
+  res.send(404, 'CANT FIND YOUR SHIT HAHAHAHAHA');
+});
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
