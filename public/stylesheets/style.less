@@ -1,4 +1,8 @@
-body {
+@import "reset.less";
+@import "elements.less";
+@import "chosen.css";
+
+html,body {
   padding: 0;
   margin: 0;
   width: 100%;
@@ -8,9 +12,151 @@ body {
   #container {
     width: 100%;
     height: 100%;
-    background-color: url('../images/bg.jpg');
+    background-image: url('../images/bg.jpg');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+
+    #logo {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      line-height: 200px;
+      text-align: center;
+      color: #d8d8d8;
+      font-size: 48px;
+    }
+
+    #form {
+      width: 400px;
+      margin: 0 auto;
+      display: block;
+
+      .bit {
+        width: 100%;
+        display: block;
+
+        h1 {
+          font-size: 16px;
+          padding-bottom: 2px;
+          color: white;
+          text-transform: uppercase;
+        }
+
+        .chosen-select {
+          width: 100%;
+          line-height: 40px;
+          height: 40px;
+          padding: 10px;
+        }
+
+        .chosen-single {
+          border-radius: 0;
+          height: 40px;
+          line-height: 40px;
+          background: none;
+          background-color: white;
+          border: 0;
+          span {
+            font-size: 16px !important;
+          }
+
+          div {
+          }
+        }
+
+        .chosen-container .chosen-drop {
+          border: none;
+        }
+
+        .chosen-results {
+          font-size: 15px;
+          li {
+            padding-bottom: 5px;
+          }
+        }
+
+        #content {
+          width: 378px;
+          height: 200px;
+          font-family: "Proxima Nova";
+          color: black;
+          font-size: 16px;
+          padding: 10px;
+          outline: none;
+        }
+        padding-bottom: 30px;
+
+      }
+
+      #generate {
+        width: 100%;
+        padding: 20px;
+        color: white;
+        outline: none;
+        cursor: pointer;
+        border: 0;
+        background-color: #27AE60;
+        font-size: 16px;
+        .transition();
+
+        &:hover {
+          background-color: darken(#27ae60, 5%);
+        }
+      }
+    }
+
+    #stage {
+      width: 860px;
+      margin: 0 auto;
+
+      #video {
+        @width: 853px;
+        @height: 480px;
+        margin: 0 auto;
+        width: @width;
+        height: @height;
+
+        background: black;
+      }
+
+      #share {
+        font-size: 16px;
+        margin: 60px 0;
+        width: auto;
+        color: white;
+        
+        a {
+          padding: 15px 30px;
+          display: inline-block;
+        }
+
+        #fb {
+          background-color: #3B5998;
+        }
+
+        #tweet {
+          background-color: #00B0ED;
+        }
+
+        #link {
+          float: right;
+          background-color: rgba(0,0,0,.5);
+          color: white;
+          text-decoration: none;
+          cursor: pointer;
+          outline: none;
+          -webkit-transform: .2s all linear;
+          .transition();
+
+          &:hover {
+            text-decoration: none;
+            color: white;
+            background-color: black;
+          }
+        }
+      }
+  
+    }
   }
 }
