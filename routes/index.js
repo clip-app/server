@@ -4,7 +4,7 @@ var _           = require('underscore');
 var Word        = require('../word');
 var Generation  = require('../generation');
 
-mongoose.connect("mongodb://plato.hackedu.us:27017", function () {
+mongoose.connect("mongodb://"+process.env.DB_PORT_27017_TCP_ADDR+":"+process.env.DB_PORT_27017_TCP_PORT || "mongodb://plato.hackedu.us:27017", function () {
   console.log("connected to mongodb", arguments);
 });
 
