@@ -32,6 +32,7 @@ exports.generate = function(req, res) {
   var words = body.split(' ');
 
   async.map(words, function (word, callback) {
+    word = word.toLowerCase().replace(".","").replace("!","").replace(",","");
     Word
     .findOne()
     .where('topic').equals(topic)

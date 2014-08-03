@@ -1,7 +1,6 @@
 var PLAYER_COUNT = 5;
 var currentPlayerIndex = 0;
 var players = [];
-var eventIndex = 0;
 var events = [];
 var playCount = 0;
 
@@ -48,8 +47,9 @@ Player.prototype.cueNext = function () {
 Player.prototype.onStateChange = function (newState) {
   switch (newState.data) {
     case YT.PlayerState.ENDED:
-      this.cueNext();
+      this.cueNext(); // if video is ended, puts next video in current spot
       playNext();
+      console.log("ENDED!!!!!");
       break;
     case YT.PlayerState.PLAYING:
       if (this.state == 3) {
@@ -60,7 +60,7 @@ Player.prototype.onStateChange = function (newState) {
     case YT.PlayerState.PAUSED:
       if (this.state == 3) {
         this.state = 4;
-        checkAllReady();
+        // checkAllReady();
       }
       break;
     case YT.PlayerState.CUED:
@@ -78,31 +78,39 @@ Player.prototype.onReady = function (e) {
   this.cueNext();
 }
 
-function checkAllReady() {
-  if (players.length == PLAYER_COUNT || events.length == 0) {
-    var allReady = true;
-    console.log("------------------");
-    players.forEach(function(player) {
-      console.log(player.state);
-      if (player.state != 4) {
-        allReady = false;
-        return;
-      }
-    });
+// function checkAllReady() {
 
-    if (allReady) {
-      playNext();
-    }    
-  }
+//   if (players.length == PLAYER_COUNT || events.length == 0) {
+//     var allReady = true;
+//     console.log("------------------");
+//     players.forEach(function(player) {
+//       console.log(player.state);
+//       if (player.getPlayerState() !== YT.PlayerState.PAUSED) {
+//         allReady = false;
+//         return;
+//       }
+//     });
+
+//     if (allReady) {
+//       playNext();
+//     }
+//   }
+
+// }
+
+window.onYouTubePlayerReady = function(playerID) {
+  console.log("LOL",arguments);
 }
 
 function onYouTubeIframeAPIReady() {
+  console.log(arguments);
+  numOfClips = input.length;
   events = input;
 
   var totalEvents = events.length;
   for (var i = 0; i < Math.min(PLAYER_COUNT, totalEvents); i++) {
     var playerDiv = document.createElement("div");
-    playerDiv.id = "player-"+i;
+    playerDiv.id = "player-" + i;
     playerDiv.className = "video";
     document.getElementById("players").appendChild(playerDiv);
 
@@ -111,6 +119,20 @@ function onYouTubeIframeAPIReady() {
 }
 
 function playNext() {
+
+  if (!this.hasOwnProperty('numCalls')) {
+    console.log('called once')
+    this.numCalls = 0;
+  }
+  this.numCalls++;
+
+  if (this.numCalls === numOfClips) {
+    console.log("Finished for real");
+    // $("iframe").hide();
+    $("#controls").addClass('pause')
+    return;
+  }
+
   var currentPlayer = players[currentPlayerIndex];
   
   if (currentPlayerIndex >= players.length-1) {
@@ -118,6 +140,8 @@ function playNext() {
   } else {
     currentPlayerIndex++;
   }
+
+  console.log(playCount);
 
   currentPlayer.player.playVideo();
 
