@@ -50,7 +50,10 @@ exports.generate = function(req, res) {
 exports.generation = function(req, res) {
   var generation_id = req.param('generation_id');
   console.log(req.params);
-  Generation.findById(generation_id, function (err, generation) {
+  Generation
+  .findById(generation_id)
+  .populate('words')
+  .exec(function (err, generation) {
     if (err) {
       return res.send(500, err);
     }

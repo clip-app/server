@@ -4,7 +4,7 @@ block content
   #container
     #logo
       #logocontainer Clippy
-    #form
+    #form(action="/generate", method="POST")
       .bit
         h1 Speaker
         select(data-placeholder="Choose a person...",class="chosen-select")
@@ -20,4 +20,4 @@ block content
       .bit
         h1 Phrase
         textarea(placeholder="This app will win YC hacks")#content
-      button#generate Generate
+      submit#generate Generate
