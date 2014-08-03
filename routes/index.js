@@ -1,52 +1,51 @@
-var elasticsearch = require('elasticsearch');
+var mongoose    = require('mongoose');
+var _           = require('underscore'); 
+var Word        = require('../word');
+var Generation  = require('../generation');
 
-var elastic = new elasticsearch.Client({
-  host: 'http://plato.hackedu.us:9200',
-  log: 'info'
+mongoose.connect("mongodb://plato.hackedu.us:27017", function () {
+  console.log("connected to mongodb", arguments);
 });
 
-/*
- * GET home page.
- */
-
-exports.index = function(req, res){
+exports.index = function(req, res) {
   res.render('index');
 };
 
-exports.generate = function(req, res){
-  //generate here
+exports.generate = function(req, res) {
+  // generate here
   var entity = req.param('entity');
   var word = req.param('word');
-
-  elastic.search({
-    index: 'words',
-    type: 'word',
-    body: {
-      query: {
-        match: {
-          topic: entity,
-          word: word
-        }
-      }
-    }
-  }).then(function (err, res) {
+  Word
+  .find()
+  .where('topic').equals(entity)
+  .where('word').equals(word)
+  .exec(function (err, words) {
     if (err) {
-      console.log("ERRR");
       console.log(err);
+      res.send(500, err);
     }
-
-    var hits = res.hits.hits;
-
-    console.log(hits);
-
-    //redirect to video
-    var hash = 'foobar'
-    var url = '/video/'+hash
-    res.redirect(url)
+    var generation = new Generation({
+      words: _.pluck(words, '_id'),
+    });
+    generation.save(function (err) {
+      if (err) {
+        return res.send(500, err);
+      }
+      res.redirect('/' + generation._id);
+    });
   });
 };
 
-exports.video = function(req, res){
-  var v = req.param('video')
-  res.render('video', { video: v });
+exports.generation = function(req, res) {
+  var generation_id = req.param('generation_id');
+  console.log(req.params);
+  Generation.findById(generation_id, function (err, generation) {
+    if (err) {
+      return res.send(500, err);
+    }
+    if (!generation) {
+      return res.send(404, "No generation with that idea found. U mad?");
+    }
+    res.render('video', generation.toObject());
+  });
 };
