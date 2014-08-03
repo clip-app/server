@@ -1,5 +1,17 @@
 extends layout
 
 block content
-  h1 Clippy
-  p Welcome to clippy
+  #container
+    #logo Clippy
+    #form
+      .bit
+        h1 Person
+        select(data-placeholder="Choose a person...",class="chosen-select")
+          option(value="A") Childish Gambino
+          option(value="B") Barry O'
+          option(value="C") Hillary Clinton
+          option(value="D") Bill Nye
+      .bit
+        h1 Text
+        textarea#content
+      button#generate Generate Video
