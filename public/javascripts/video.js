@@ -34,7 +34,7 @@ Player.prototype.cueNext = function () {
 
   playCount++;
   var node = document.getElementById(this.nodeId);
-  node.style.zIndex = -playCount;
+  node.style.zIndex = 10000 -playCount;
 
   this.state = 3;
   this.player.cueVideoById({
@@ -86,7 +86,7 @@ function onYouTubeIframeAPIReady() {
   for (var i = 0; i < PLAYER_COUNT; i++) {
     var playerDiv = document.createElement("div");
     playerDiv.id = "player-"+i;
-    playerDiv.className = "video-player";
+    playerDiv.className = "video";
     document.getElementById("players").appendChild(playerDiv);
 
     players.push(new Player(playerDiv));
