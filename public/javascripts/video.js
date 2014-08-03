@@ -55,7 +55,7 @@ Player.prototype.onStateChange = function (newState) {
         var node = document.getElementById(this.nodeId);
         node.style.zIndex = 0;
       }
-      playNext();
+      setTimeout(playNext, 200);
       break;
     case YT.PlayerState.PLAYING:
       if (this.state == 3) {
