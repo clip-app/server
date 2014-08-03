@@ -2,8 +2,9 @@ extends layout
 
 block content
   #container
-    #logo
-      #logocontainer Clippy
+    #logo 
+      img(src="/public/images/q.png", alt="Quilt")
+
     form#form(action="/generate", method="POST")
       .bit
         h1 Speaker

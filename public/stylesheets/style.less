@@ -24,6 +24,7 @@ html,body {
 
   #container {
     width: 100%;
+    z-index: 0;
     height: 100%;
 
     #logo {
@@ -32,11 +33,13 @@ html,body {
       height: 80px;
       line-height: 80px;
       text-align: center;
-      color: #d8d8d8;
-      font-size: 48px;
-      padding-top: 40px;
-      padding-bottom: 40px;
-      text-transform: uppercase;
+      margin: 40px 0;
+
+      img {
+        height: 100%;
+        display: block;
+        margin: 0 auto;
+      }
     }
 
     @form-w: 500px;
@@ -139,10 +142,30 @@ html,body {
       margin: 0 auto;
       @width: 98%;
       @height: 480px;
+      z-index: 1;
 
       #outline {
-        height: 480px;
+        height: @height+40px;
         position: relative;
+
+        #controls {
+          width: @width;
+          height: @height+40px;
+          position: absolute;
+          z-index: 100000000000000000000;
+          
+          &.pause {
+            background-color: rgba(0,0,0,.2);
+            background-image: url('../images/play.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+          }
+        }
+
+        #players {
+          height: @height+40px;
+          width: 100%;
+        }
 
         .video {
           border: 2px dashed #363636;
@@ -152,7 +175,7 @@ html,body {
           box-shadow: 0 0 0 4px black, 2px 1px 6px 4px rgba(0, 0, 0, 0.1);
           margin: 0 auto;
           width: @width;
-          height: @height;
+          height: @height+30px;
 
           background: black;
         }
@@ -160,7 +183,7 @@ html,body {
 
       #share {
         font-size: 16px;
-        margin-top: 50px+@height;
+        margin-top: 50px;
         padding-bottom: 20px;
         width: auto;
         color: white;
