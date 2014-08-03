@@ -60,6 +60,7 @@ Player.prototype.onStateChange = function (newState) {
     case YT.PlayerState.PAUSED:
       if (this.state == 3) {
         this.state = 4;
+        checkAllReady();
       }
       break;
     case YT.PlayerState.CUED:
@@ -77,10 +78,29 @@ Player.prototype.onReady = function (e) {
   this.cueNext();
 }
 
+function checkAllReady() {
+  if (players.length == PLAYER_COUNT || events.length == 0) {
+    var allReady = true;
+    console.log("------------------");
+    players.forEach(function(player) {
+      console.log(player.state);
+      if (player.state != 4) {
+        allReady = false;
+        return;
+      }
+    });
+
+    if (allReady) {
+      playNext();
+    }    
+  }
+}
+
 function onYouTubeIframeAPIReady() {
   events = input;
 
-  for (var i = 0; i < PLAYER_COUNT; i++) {
+  var totalEvents = events.length;
+  for (var i = 0; i < Math.min(PLAYER_COUNT, totalEvents); i++) {
     var playerDiv = document.createElement("div");
     playerDiv.id = "player-"+i;
     playerDiv.className = "video";
