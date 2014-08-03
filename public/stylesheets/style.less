@@ -33,7 +33,7 @@ html,body {
       height: 80px;
       line-height: 80px;
       text-align: center;
-      margin: 40px 0;
+      margin: 30px 0;
 
       img {
         height: 100%;
@@ -102,7 +102,7 @@ html,body {
         #content {
           width: @form-w - 22px;
           height: 300px;
-          font-family: "Gotham", "Proxima Nova";
+          font-family: ProximaNova, "Gotham";
           color: black;
           font-size: 18px;
           padding: 10px;
@@ -155,16 +155,37 @@ html,body {
           z-index: 100000000000000000000;
           
           &.pause {
-            background-color: rgba(0,0,0,.2);
-            background-image: url('../images/play.png');
-            background-repeat: no-repeat;
-            background-position: center center;
+            a {
+              display: block;
+            }
+          }
+
+          a {
+             display: none;
+             width: 0;
+             height: 0;
+             border-left: 100px solid white;
+             border-top: 50px solid transparent;
+             border-bottom: 50px solid transparent;
+             margin: 200px auto 0;
           }
         }
+
 
         #players {
           height: @height+40px;
           width: 100%;
+
+          #current-word {
+            color: white;
+            bottom: 15px;
+            width: 100%;
+            position: absolute;
+            z-index: 10000;
+            font-size: 65px;
+            text-align: center;
+            vertical-align: bottom;
+          }
         }
 
         .video {
@@ -201,6 +222,14 @@ html,body {
           border: 2px dashed #8B9DC3;
           border-radius: 4px;
           box-shadow: 0 0 0 3px #3B5998, 2px 1px 4px 4px rgba(0, 0, 0, 0.1);
+          color: white;
+          text-decoration: none;
+
+          &:hover, &:visited, &:active {
+            color: white;
+            text-decoration: none;
+          }
+
         }
 
         #tweet {
@@ -208,6 +237,14 @@ html,body {
           border: 2px dashed #BEDFF0;
           border-radius: 4px;
           box-shadow: 0 0 0 3px #459ECE, 2px 1px 4px 4px rgba(0, 0, 0, 0.1);
+
+          color: white;
+          text-decoration: none;
+
+          &:hover, &:visited, &:active {
+            color: white;
+            text-decoration: none;
+          }
         }
 
         #link {

@@ -3,20 +3,23 @@ extends layout
 block content
   #container
     #logo 
-      img(src="/public/images/q.png", alt="Quilt")
+      a(href="#")
+        img(src="/images/q.png", alt="Quilt")
 
     form#form(action="/generate", method="POST")
       .bit
         select(data-placeholder="Choose a person...", name="topic", class="chosen-select")
-          option(value="A") Paul Graham
-          option(value="B") Barack Obama
-          option(value="C") Hillary Clinton
-          option(value="D") Bill Nye
-          option(value="E") Neil deGrasse Tyson
-          option(value="F") Edward Snowden
+          option(value="pg") Paul Graham
+          option(value="Barack Obama") Barack Obama
+          option(value="hilary") Hillary Clinton
+          option(value="sama") Sam Altman
+          option(value="nye") Bill Nye
+          option(value="snowden") Edward Snowden
           option(value="zuckerberg") Mark Zuckerberg
-          option(value="H") Steve Jobs
-          option(value="I") Bill Gates
+          option(value="jobs") Steve Jobs
+          option(value="gates") Bill Gates
+          option(value="bino") Childish Gambino
       .bit
-        textarea(name='body', placeholder="This app will win YC hacks")#content
+        h1 Phrase
+        textarea(name='body', placeholder="Enter phrase here")#content
       button#generate(type='submit', name='submit', value="submit") Generate

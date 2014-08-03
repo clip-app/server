@@ -4,9 +4,15 @@ var _           = require('underscore');
 var Word        = require('../word');
 var Generation  = require('../generation');
 
-mongoose.connect("mongodb://plato.hackedu.us:27017", function () {
-  console.log("connected to mongodb", arguments);
-});
+if (process.env.DB_PORT_27017_TCP_ADDR) {
+  mongoose.connect("mongodb://"+process.env.DB_PORT_27017_TCP_ADDR+":"+process.env.DB_PORT_27017_TCP_PORT, function () {
+    console.log("connected to mongodb", arguments);
+  });
+} else {
+  mongoose.connect("mongodb://plato.hackedu.us:27017", function () {
+    console.log("connected to mongodb", arguments);
+  });
+}
 
 mongoose.set('debug', true);
 
@@ -32,6 +38,7 @@ exports.generate = function(req, res) {
   var words = body.split(' ');
 
   async.map(words, function (word, callback) {
+    word = word.toLowerCase().replace(".","").replace("!","").replace(",","");
     Word
     .findOne()
     .where('topic').equals(topic)
@@ -39,15 +46,13 @@ exports.generate = function(req, res) {
     .exec(function (err, doc) {
       if (err) return callback(err);
       if (!doc) {
-        return callback(null, {
-          topic: "pg",
-          word: "umm",
-          video_id: "Ci9L6zVbwnA",
-          start: 810,
-          end: 812
-        });
+        Word
+        .findOne()
+        .where('word').equals('ummXXX')
+        .exec(callback);
+      } else {
+        callback(null, doc);
       }
-      return callback(null, doc);
     });
   }, function done(err, words) {
     if (err) {
@@ -83,7 +88,8 @@ exports.generation = function(req, res) {
     }
     console.log(generation.words.toObject());
     res.render('video', {
-      words: JSON.stringify(generation.words.toObject())
+      words: JSON.stringify(generation.words.toObject()),
+      gen_id: generation._id
     });
   });
 };
