@@ -15,9 +15,13 @@ block content
         #share 
           a#fb(href="#") Share on Facebook
           a#tweet(href="https://twitter.com/home?status=Check%20out%20http://quilt.io/53de4cff2f4a6f0faea427a2%20it%20is%20%23STACKED") Share on Twitter
-          a#link(href="#copy", contenteditable="true") http://quilt.io/53de4cff2f4a6f0faea427a2
+          a#link(href="#copy", contenteditable="true")
   script.
     var input = !{words}
+    document.getElementById('fb').href = "https://www.facebook.com/sharer/sharer.php?u=" + window.location;
+    document.getElementById('tweet').href = "https://twitter.com/home?status=Check%20out%20" + window.location + "%20it%20is%20%23STACKED";
+    document.getElementById('link').innerHTML = window.location;
+
 
   | <script src="https://www.youtube.com/iframe_api"></script>
   | <script src="/javascripts/video.js"></script>

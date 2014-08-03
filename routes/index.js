@@ -4,9 +4,15 @@ var _           = require('underscore');
 var Word        = require('../word');
 var Generation  = require('../generation');
 
-mongoose.connect("mongodb://"+process.env.DB_PORT_27017_TCP_ADDR+":"+process.env.DB_PORT_27017_TCP_PORT || "mongodb://plato.hackedu.us:27017", function () {
-  console.log("connected to mongodb", arguments);
-});
+if (process.env.DB_PORT_27017_TCP_ADDR) {
+  mongoose.connect("mongodb://"+process.env.DB_PORT_27017_TCP_ADDR+":"+process.env.DB_PORT_27017_TCP_PORT, function () {
+    console.log("connected to mongodb", arguments);
+  });
+} else {
+  mongoose.connect("mongodb://plato.hackedu.us:27017", function () {
+    console.log("connected to mongodb", arguments);
+  });
+}
 
 mongoose.set('debug', true);
 
@@ -82,7 +88,8 @@ exports.generation = function(req, res) {
     }
     console.log(generation.words.toObject());
     res.render('video', {
-      words: JSON.stringify(generation.words.toObject())
+      words: JSON.stringify(generation.words.toObject()),
+      gen_id: generation._id
     });
   });
 };
