@@ -1,4 +1,5 @@
 var mongoose    = require('mongoose');
+var async       = require('async');
 var _           = require('underscore'); 
 var Word        = require('../word');
 var Generation  = require('../generation');
@@ -6,6 +7,8 @@ var Generation  = require('../generation');
 mongoose.connect("mongodb://plato.hackedu.us:27017", function () {
   console.log("connected to mongodb", arguments);
 });
+
+mongoose.set('debug', true);
 
 exports.index = function(req, res) {
   res.render('index');
@@ -27,25 +30,42 @@ exports.generate = function(req, res) {
   var topic = req.param('topic');
   var body = req.param('body');
   var words = body.split(' ');
-  Word
-  // .find()
-  // // .where('topic').equals(entity)
-  // .where('word').equals(word)
-  // .exec(function (err, words) {
-  //   if (err) {
-  //     console.log(err);
-  //     res.send(500, err);
-  //   }
-  //   var generation = new Generation({
-  //     words: _.pluck(words, '_id'),
-  //   });
-  //   generation.save(function (err) {
-  //     if (err) {
-  //       return res.send(500, err);
-  //     }
-  //     res.redirect('/' + generation._id);
-  //   });
-  // });
+
+  async.map(words, function (word, callback) {
+    Word
+    .findOne()
+    .where('topic').equals(topic)
+    .where('word').equals(word)
+    .exec(function (err, doc) {
+      if (err) return callback(err);
+      if (!doc) {
+        return callback(null, {
+          topic: "pg",
+          word: "umm",
+          video_id: "Ci9L6zVbwnA",
+          start: 810,
+          end: 812
+        });
+      }
+      return callback(null, doc);
+    });
+  }, function done(err, words) {
+    if (err) {
+      console.log(err);
+      res.send(500, err);
+    }
+    console.log(words);
+    var generation = new Generation({
+      words: _.pluck(words, '_id'),
+    });
+    console.log(generation);
+    generation.save(function (err) {
+      if (err) {
+        return res.send(500, err);
+      }
+      res.redirect('/' + generation._id);
+    });
+  });
 };
 
 exports.generation = function(req, res) {
