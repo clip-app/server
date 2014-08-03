@@ -1,3 +1,9 @@
+var elasticsearch = require('elasticsearch');
+
+var elastic = new elasticsearch.Client({
+  host: 'http://plato.hackedu.us:9200',
+  log: 'info'
+});
 
 /*
  * GET home page.
@@ -12,10 +18,30 @@ exports.generate = function(req, res){
   var entity = req.param('entity')
   var content = req.param('content')
 
-  //redirect to video
-  var hash = 'foobar'
-  var url = '/video/'+hash
-  res.redirect(url)
+  elastic.search({
+    index: 'words',
+    body: {
+      query: {
+        match: {
+          topic: entity,
+          word: content
+        }
+      }
+    }
+  }).then(function (err, resp) {
+    if (err) {
+      return;
+    }
+
+    var hits = resp.hits.hits;
+
+    console.log(hits);
+
+    //redirect to video
+    var hash = 'foobar'
+    var url = '/video/'+hash
+    res.redirect(url)
+  });
 };
 
 exports.video = function(req, res){
