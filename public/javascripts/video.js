@@ -28,7 +28,6 @@ Player.prototype.cueNext = function () {
   var event = events.shift();
 
   if (event == undefined) {
-    console.log("DONE");
     return;
   }
 
@@ -43,6 +42,7 @@ Player.prototype.cueNext = function () {
     endSeconds: event.end + 0.02,
     suggestedQuality: "240p"
   });
+  this.meta = event;
 }
 
 Player.prototype.onStateChange = function (newState) {
@@ -74,14 +74,11 @@ Player.prototype.onStateChange = function (newState) {
 }
 
 Player.prototype.onReady = function (e) {
-  console.log("READY FOOL");
-  console.log(arguments);
   this.cueNext();
 }
 
 function onYouTubeIframeAPIReady() {
   events = input;
-  console.log(events);
 
   for (var i = 0; i < PLAYER_COUNT; i++) {
     var playerDiv = document.createElement("div");
@@ -103,4 +100,10 @@ function playNext() {
   }
 
   currentPlayer.player.playVideo();
+
+  var word = currentPlayer.meta ? currentPlayer.meta.word : undefined;
+  if (word) {
+    if (word == "ummXXX") word = "";
+    $("#current-word").html(word);
+  }
 }
