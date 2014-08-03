@@ -107,3 +107,7 @@ function playNext() {
     $("#current-word").html(word);
   }
 }
+
+document.getElementById('fb').href = "https://www.facebook.com/sharer/sharer.php?u=" + window.location;
+document.getElementById('tweet').href = "https://twitter.com/home?status=Check%20out%20" + window.location + "%20it%20is%20%23STACKED";
+document.getElementById('link').innerHTML = window.location;
