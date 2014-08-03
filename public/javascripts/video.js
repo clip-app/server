@@ -1,8 +1,6 @@
 var PLAYER_COUNT = 5;
 var currentPlayerIndex = 0;
 var players = [];
-var events = [];
-var playCount = 0;
 
 var Player = function (node) {
   this.player = new YT.Player(node.id, {
@@ -18,49 +16,57 @@ var Player = function (node) {
     }
   });
   this.nodeId = node.id;
+  this.currentWord = null,
   this.state = 0; // 0 - Default
                   // 3 - Setting up buffering
                   // 4 - Ready to play
 };
 
 Player.prototype.cueNext = function () {
-  var event = events.shift();
+  var currentWord = wordBank.shift();
 
-  if (event == undefined) {
+  if (currentWord == undefined) {
+    console.log("DONE");
     return;
   }
 
-  playCount++;
   var node = document.getElementById(this.nodeId);
-  node.style.zIndex = 10000 -playCount;
+  node.style.zIndex = 10000 + wordBank.length;
+
+  currentWord.start = currentWord.start - 0.05;
+  currentWord.end = currentWord.end + 0.04;
 
   this.state = 3;
+  this.currentWord = currentWord;
   this.player.cueVideoById({
-    videoId: event.video_id,
-    startSeconds: event.start - 0.03,
-    endSeconds: event.end + 0.02,
+    videoId: currentWord.video_id,
+    startSeconds: currentWord.start,
+    endSeconds: currentWord.end,
     suggestedQuality: "240p"
   });
-  this.meta = event;
 }
 
 Player.prototype.onStateChange = function (newState) {
   switch (newState.data) {
     case YT.PlayerState.ENDED:
-      this.cueNext(); // if video is ended, puts next video in current spot
+      if (wordBank.length > 0) {
+        this.cueNext();
+      } else {
+        var node = document.getElementById(this.nodeId);
+        node.style.zIndex = 0;
+      }
       playNext();
-      console.log("ENDED!!!!!");
       break;
     case YT.PlayerState.PLAYING:
       if (this.state == 3) {
         this.player.pauseVideo();
         this.player.unMute();
+        this.player.seekTo(this.currentWord.start)
       }
       break;
     case YT.PlayerState.PAUSED:
       if (this.state == 3) {
         this.state = 4;
-        // checkAllReady();
       }
       break;
     case YT.PlayerState.CUED:
@@ -75,42 +81,18 @@ Player.prototype.onStateChange = function (newState) {
 }
 
 Player.prototype.onReady = function (e) {
+  console.log("READY FOOL");
+  console.log(arguments);
   this.cueNext();
 }
 
-// function checkAllReady() {
-
-//   if (players.length == PLAYER_COUNT || events.length == 0) {
-//     var allReady = true;
-//     console.log("------------------");
-//     players.forEach(function(player) {
-//       console.log(player.state);
-//       if (player.getPlayerState() !== YT.PlayerState.PAUSED) {
-//         allReady = false;
-//         return;
-//       }
-//     });
-
-//     if (allReady) {
-//       playNext();
-//     }
-//   }
-
-// }
-
-window.onYouTubePlayerReady = function(playerID) {
-  console.log("LOL",arguments);
-}
-
 function onYouTubeIframeAPIReady() {
-  console.log(arguments);
-  numOfClips = input.length;
-  events = input;
+  wordBank = input;
+  console.log(wordBank);
 
-  var totalEvents = events.length;
-  for (var i = 0; i < Math.min(PLAYER_COUNT, totalEvents); i++) {
+  for (var i = 0; i < PLAYER_COUNT; i++) {
     var playerDiv = document.createElement("div");
-    playerDiv.id = "player-" + i;
+    playerDiv.id = "player-"+i;
     playerDiv.className = "video";
     document.getElementById("players").appendChild(playerDiv);
 
@@ -119,20 +101,6 @@ function onYouTubeIframeAPIReady() {
 }
 
 function playNext() {
-
-  if (!this.hasOwnProperty('numCalls')) {
-    console.log('called once')
-    this.numCalls = 0;
-  }
-  this.numCalls++;
-
-  if (this.numCalls === numOfClips) {
-    console.log("Finished for real");
-    // $("iframe").hide();
-    $("#controls").addClass('pause')
-    return;
-  }
-
   var currentPlayer = players[currentPlayerIndex];
   
   if (currentPlayerIndex >= players.length-1) {
@@ -141,17 +109,5 @@ function playNext() {
     currentPlayerIndex++;
   }
 
-  console.log(playCount);
-
   currentPlayer.player.playVideo();
-
-  var word = currentPlayer.meta ? currentPlayer.meta.word : undefined;
-  if (word) {
-    if (word == "ummXXX") word = "";
-    $("#current-word").html(word);
-  }
 }
-
-document.getElementById('fb').href = "https://www.facebook.com/sharer/sharer.php?u=" + window.location;
-document.getElementById('tweet').href = "https://twitter.com/home?status=Check%20out%20" + window.location + "%20it%20is%20%23STACKED";
-document.getElementById('link').innerHTML = window.location;
